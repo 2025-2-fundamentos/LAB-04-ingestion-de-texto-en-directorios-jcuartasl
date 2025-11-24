@@ -6,6 +6,9 @@ Escriba el codigo que ejecute la accion solicitada en cada pregunta.
 """
 
 
+from glob import glob
+
+
 def pregunta_01():
     """
     La información requerida para este laboratio esta almacenada en el
@@ -71,3 +74,43 @@ def pregunta_01():
 
 
     """
+    import os, glob
+    import pandas as pd
+
+
+    def read_data(sub, folder):
+        data = []
+        for file in glob.glob(f".\\files\\input\\{sub}\\{folder}\\*.txt"):
+            with open(file, "r", encoding="utf-8") as f:
+                text = f.read().strip()
+            data.append((text, folder))
+        return data
+    
+
+
+
+    df_train = pd.DataFrame(
+        read_data("train", "negative") +
+        read_data("train", "positive") +
+        read_data("train", "neutral"),
+        columns=["phrase", "target"]
+    )
+
+    df_test = pd.DataFrame(
+        read_data("test", "negative") +
+        read_data("test", "positive") +
+        read_data("test", "neutral"),
+        columns=["phrase", "target"]
+    )
+
+
+    if os.path.exists("files/output/"):
+        for file in glob.glob(f"files/output/*"):
+            os.remove(file)
+    else:
+        os.makedirs("files/output")
+
+    df_train.to_csv("files/output/train_dataset.csv", index=False)
+    df_test.to_csv("files/output/test_dataset.csv", index=False)
+
+pregunta_01()
