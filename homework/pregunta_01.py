@@ -87,8 +87,6 @@ def pregunta_01():
         return data
     
 
-
-
     df_train = pd.DataFrame(
         read_data("train", "negative") +
         read_data("train", "positive") +
