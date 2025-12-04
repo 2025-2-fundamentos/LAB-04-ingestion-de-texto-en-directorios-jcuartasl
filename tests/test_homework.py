@@ -42,4 +42,3 @@ def test_01():
     assert counts["neutral"] == 274
     assert counts["positive"] == 112
     assert counts["negative"] == 67
-
